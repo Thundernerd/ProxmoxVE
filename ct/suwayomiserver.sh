@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
+source <(curl -fsSL https://raw.githubusercontent.com/Thundernerd/ProxmoxVE/main/misc/build.func)
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: Slaviša Arežina (tremor021)
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
-# Source: https://github.com/Suwayomi/Suwayomi-Server
+# License: MIT | https://github.com/Thundernerd/ProxmoxVE/raw/main/LICENSE
+# Source: https://github.com/Suwayomi/Suwayomi-Server-preview
 
 APP="SuwayomiServer"
 var_tags="${var_tags:-media;manga}"
@@ -24,7 +24,7 @@ function update_script() {
   check_container_storage
   check_container_resources
 
-  if [[ ! -f /usr/bin/suwayomi-server ]]; then
+  if [[ ! -f /usr/bin/Suwayomi-Server-preview ]]; then
     msg_error "No ${APP} Installation Found!"
     exit
   fi
@@ -32,30 +32,30 @@ function update_script() {
     $STD apt-get remove -y openjdk-17-jre
   fi
   JAVA_VERSION=21 setup_java
-  RELEASE=$(curl -fsSL https://api.github.com/repos/Suwayomi/Suwayomi-Server/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-  if [[ "${RELEASE}" != "$(cat /opt/suwayomi-server_version.txt)" ]] || [[ ! -f /opt/suwayomi-server_version.txt ]]; then
+  RELEASE=$(curl -fsSL https://api.github.com/repos/Suwayomi/Suwayomi-Server-preview/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
+  if [[ "${RELEASE}" != "$(cat /opt/Suwayomi-Server-preview_version.txt)" ]] || [[ ! -f /opt/Suwayomi-Server-preview_version.txt ]]; then
     msg_info "Updating $APP"
 
     msg_info "Stopping $APP"
-    systemctl stop suwayomi-server
+    systemctl stop Suwayomi-Server-preview
     msg_ok "Stopped $APP"
 
     msg_info "Updating $APP to v${RELEASE}"
     temp_file=$(mktemp)
-    RELEASE=$(curl -fsSL https://api.github.com/repos/Suwayomi/Suwayomi-Server/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
-    curl -fsSL "https://github.com/Suwayomi/Suwayomi-Server/releases/download/${RELEASE}/Suwayomi-Server-${RELEASE}-debian-all.deb" -o "$temp_file"
+    RELEASE=$(curl -fsSL https://api.github.com/repos/Suwayomi/Suwayomi-Server-preview/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
+    curl -fsSL "https://github.com/Suwayomi/Suwayomi-Server-preview/releases/download/${RELEASE}/Suwayomi-Server-preview-${RELEASE}-debian-all.deb" -o "$temp_file"
     $STD dpkg -i "$temp_file"
     msg_ok "Updated $APP to v${RELEASE}"
 
     msg_info "Starting $APP"
-    systemctl start suwayomi-server
+    systemctl start Suwayomi-Server-preview
     msg_ok "Started $APP"
 
     msg_info "Cleaning Up"
     rm -f "$temp_file"
     msg_ok "Cleanup Completed"
 
-    echo "${RELEASE}" >/opt/suwayomi-server_version.txt.txt
+    echo "${RELEASE}" >/opt/Suwayomi-Server-preview_version.txt.txt
     msg_ok "Update Successful"
   else
     msg_ok "No update required. ${APP} is already at v${RELEASE}"

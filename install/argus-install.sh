@@ -2,7 +2,7 @@
 
 # Copyright (c) 2021-2025 community-scripts ORG
 # Author: MickLesk (CanbiZ)
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/Thundernerd/ProxmoxVE/raw/main/LICENSE
 # Source: https://release-argus.io/
 
 source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
@@ -61,15 +61,15 @@ service:
       icon_link_to: https://release-argus.io
       web_url: https://github.com/release-argus/Argus/blob/master/CHANGELOG.md
 
-  community-scripts/ProxmoxVE:
+  Thundernerd/ProxmoxVE:
     latest_version:
       type: github
-      url: community-scripts/ProxmoxVE
+      url: Thundernerd/ProxmoxVE
       use_prerelease: false
     dashboard:
-      icon: https://raw.githubusercontent.com/community-scripts/ProxmoxVE/refs/heads/main/misc/images/logo.png
+      icon: https://raw.githubusercontent.com/Thundernerd/ProxmoxVE/refs/heads/main/misc/images/logo.png
       icon_link_to: https://helper-scripts.com/
-      web_url: https://github.com/community-scripts/ProxmoxVE/releases
+      web_url: https://github.com/Thundernerd/ProxmoxVE/releases
 EOF
 echo "${RELEASE}" >/opt/${APPLICATION}_version.txt
 msg_ok "Setup Config"
