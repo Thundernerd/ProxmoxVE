@@ -19,28 +19,28 @@ msg_ok "Installed Dependencies"
 
 JAVA_VERSION=21 setup_java
 
-msg_info "Settting up Suwayomi-Server-preview"
+msg_info "Settting up Suwayomi-server"
 temp_file=$(mktemp)
 RELEASE=$(curl -fsSL https://api.github.com/repos/Suwayomi/Suwayomi-Server-preview/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')
 curl -fsSL "https://github.com/Suwayomi/Suwayomi-Server-preview/releases/download/${RELEASE}/Suwayomi-Server-${RELEASE}-debian-all.deb" -o "$temp_file"
 $STD dpkg -i "$temp_file"
-echo "${RELEASE}" >/opt/Suwayomi-Server-preview_version.txt
-msg_ok "Done setting up Suwayomi-Server-preview"
+echo "${RELEASE}" >/opt/Suwayomi-server_version.txt
+msg_ok "Done setting up Suwayomi-server"
 
 msg_info "Creating Service"
-cat <<EOF >/etc/systemd/system/Suwayomi-Server-preview.service
+cat <<EOF >/etc/systemd/system/Suwayomi-server.service
 [Unit]
-Description=Suwayomi-Server-preview Service
+Description=Suwayomi-server Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/Suwayomi-Server-preview
+ExecStart=/usr/bin/Suwayomi-server
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable -q --now Suwayomi-Server-preview
+systemctl enable -q --now Suwayomi-server
 msg_ok "Created Service"
 
 motd_ssh
