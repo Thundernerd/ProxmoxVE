@@ -30,7 +30,7 @@ After=network.target
 [Service]
 User=root
 Type=simple
-ExecStart=/opt/Suwayomi-server/suwayomi-server.sh
+ExecStart=/usr/bin/java -jar /opt/Suwayomi-server/bin/Suwayomi-Server.jar
 TimeoutStopSec=20
 Restart=always
 
@@ -44,7 +44,6 @@ motd_ssh
 customize
 
 msg_info "Cleaning up"
-rm -f "$temp_file"
 $STD apt-get -y autoremove
 $STD apt-get -y autoclean
 msg_ok "Cleaned"
