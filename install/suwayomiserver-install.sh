@@ -19,7 +19,7 @@ msg_ok "Installed Dependencies"
 
 JAVA_VERSION=21 setup_java
 
-fetch_and_deploy_gh_release "Suwayomi-server" "Suwayomi/Suwayomi-Server-preview" "binary"
+fetch_and_deploy_gh_release "Suwayomi-server" "Suwayomi/Suwayomi-Server-preview" "prebuild" "latest" "/opt/Suwayomi-server" "Suwayomi-Server-*-linux-x64.tar.gz"
 
 msg_info "Creating Service"
 cat <<EOF >/etc/systemd/system/Suwayomi-server.service
@@ -30,7 +30,7 @@ After=network.target
 [Service]
 User=root
 Type=simple
-ExecStart=/usr/bin/Suwayomi-server
+ExecStart=/opt/Suwayomi-server/suwayomi-server.sh
 TimeoutStopSec=20
 Restart=always
 
