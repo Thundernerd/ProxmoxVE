@@ -17,9 +17,25 @@ JAVA_VERSION=21 setup_java
 
 fetch_and_deploy_gh_release "Komf" "Snd-R/komf" "singlefile" "latest" "/opt/komf" "komf-*.jar"
 
-msg_info "Creating configuration stub"
-touch /opt/komf/application.yml
-msg_ok "Created configuration stub"
+msg_info "Creating configuration"
+cat <<EOF >/opt/komf/application.yml
+komga:
+    baseUri: http://komga:25600
+    komgaUser: admin
+    komgaPassword: password
+    eventListener:
+        enabled: false
+
+kavita:
+    baseUri: http://kavita:5000
+    apiKey: abcdefg
+    eventListener:
+        enabled: false
+
+database:
+  file: ./database.sqlite
+EOF
+msg_ok "Created configuration"
 
 msg_info "Creating Service"
 cat <<EOF >/etc/systemd/system/komf.service
