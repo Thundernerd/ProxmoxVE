@@ -26,7 +26,7 @@ After=network.target
 [Service]
 User=root
 Type=simple
-ExecStart=/usr/bin/java -jar /opt/komf/komf.jar
+ExecStart=/usr/bin/java -jar /opt/komf/Komf
 TimeoutStopSec=20
 Restart=always
 
