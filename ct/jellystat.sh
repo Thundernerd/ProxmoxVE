@@ -7,7 +7,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/Thundernerd/ProxmoxVE/jell
 
 APP="Jellystat"
 var_tags="${var_tags:-media}"
-var_cpu="${var_cpu:-2}"
+var_cpu="${var_cpu:-1}"
 var_ram="${var_ram:-4096}"
 var_disk="${var_disk:-8}"
 var_os="${var_os:-debian}"
