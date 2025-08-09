@@ -14,11 +14,7 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y \
-    git \
-    build-essential
-setup_nodejs
-setup_postgres
+$STD apt-get install -y git
 msg_ok "Installed Dependencies"
 
 git clone -q https://github.com/CyferShepard/Jellystat.git /opt/jellystat
@@ -26,6 +22,9 @@ cd /opt/jellystat
 $STD git checkout main
 
 msg_info "Installing Jellystat"
+setup_nodejs
+setup_postgresql
+
 cd /opt/jellystat
 npm install
 chmod +x ./entry.sh
