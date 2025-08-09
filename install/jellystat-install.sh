@@ -21,9 +21,21 @@ git clone -q https://github.com/CyferShepard/Jellystat.git /opt/jellystat
 cd /opt/jellystat
 $STD git checkout main
 
-msg_info "Installing Jellystat"
+msg_info "Installing nodejs"
 setup_nodejs
+msg_ok "Installed nodejs"
+
+msg_info "Installing postgresql"
 setup_postgresql
+DB_NAME="jellystat"
+DB_USER="jellystat"
+DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
+$STD sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';"
+$STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER ENCODING 'UTF8';"
+$STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+msg_ok "Installed postgresql"
+
+msg_info "Installing Jellystat"
 
 cd /opt/jellystat
 npm install
@@ -32,8 +44,9 @@ sed -i -e 's/\r$//' entry.sh
 
 mkdir -p /etc/jellystat/
 cat <<EOF >/etc/jellystat/jellystat.conf
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=password
+POSTGRES_DB=$DB_NAME
+POSTGRES_USER=$DB_USER
+POSTGRES_PASSWORD=$DB_PASS
 POSTGRES_IP=127.0.0.1
 POSTGRES_PORT=5432
 JWT_SECRET=$(openssl rand -base64 32)
@@ -49,6 +62,7 @@ Description=Jellystat Service
 After=network.target
 
 [Service]
+WorkingDirectory=/opt/jellystat
 EnvironmentFile=/etc/jellystat/jellystat.conf
 ExecStart=/opt/jellystat/entry.sh
 Restart=always
