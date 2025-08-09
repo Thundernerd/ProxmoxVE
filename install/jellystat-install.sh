@@ -21,24 +21,22 @@ git clone -q https://github.com/CyferShepard/Jellystat.git /opt/jellystat
 cd /opt/jellystat
 $STD git checkout main
 
-msg_info "Installing nodejs"
 setup_nodejs
-msg_ok "Installed nodejs"
-
-msg_info "Installing postgresql"
 setup_postgresql
+
+msg_info "Configuring PostgreSQL"
 DB_NAME="jellystat"
 DB_USER="jellystat"
 DB_PASS="$(openssl rand -base64 18 | tr -dc 'a-zA-Z0-9' | cut -c1-13)"
 $STD sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';"
 $STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME WITH OWNER $DB_USER ENCODING 'UTF8';"
 $STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
-msg_ok "Installed postgresql"
+msg_ok "Installed PostgreSQL"
 
 msg_info "Installing Jellystat"
-
 cd /opt/jellystat
 npm install
+npm run build
 chmod +x ./entry.sh
 sed -i -e 's/\r$//' entry.sh
 
