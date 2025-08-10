@@ -178,7 +178,7 @@ Description=Jellysweep Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/jellysweep --config /etc/jellysweep/jellysweep.conf
+ExecStart=/usr/bin/jellysweep serve --config /etc/jellysweep/jellysweep.conf
 Restart=always
 
 [Install]
